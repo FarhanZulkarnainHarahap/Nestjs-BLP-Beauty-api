@@ -8,6 +8,18 @@ type PrismaAdapterModule = typeof import("@auth/prisma-adapter");
 type GoogleModule = typeof import("@auth/express/providers/google");
 type FacebookModule = typeof import("@auth/express/providers/facebook");
 
+// Vercel traces static imports when assembling the NestJS serverless bundle.
+// Keep these imports visible to its file tracer while nativeImport loads the
+// ESM-only packages at runtime from this CommonJS build.
+const traceAuthDependencies = () =>
+  Promise.all([
+    import("@auth/express"),
+    import("@auth/prisma-adapter"),
+    import("@auth/express/providers/google"),
+    import("@auth/express/providers/facebook"),
+  ]);
+void traceAuthDependencies;
+
 const nativeImport = new Function("specifier", "return import(specifier)") as <T>(
   specifier: string,
 ) => Promise<T>;
