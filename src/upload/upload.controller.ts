@@ -33,7 +33,13 @@ export class UploadController {
   )
   async upload(@UploadedFile() file: Express.Multer.File) {
     if (!file) throw new BadRequestException("Image file is required");
-    if (!this.config.get("CLOUDINARY_CLOUD_NAME"))
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.mimetype))
+      throw new BadRequestException("Only JPG, PNG, and WebP images are allowed");
+    if (
+      !this.config.get("CLOUDINARY_CLOUD_NAME") ||
+      !this.config.get("CLOUDINARY_API_KEY") ||
+      !this.config.get("CLOUDINARY_API_SECRET")
+    )
       throw new ServiceUnavailableException("Cloudinary credentials are not configured");
     const url = await new Promise<string>((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream({ folder: "beauty-cms" }, (error, result) =>

@@ -49,6 +49,14 @@ export class ProductsService {
     if (!data) throw new NotFoundException("Product not found");
     return { success: true, data };
   }
+  async byId(id: string) {
+    const data = await this.prisma.product.findUnique({
+      where: { id },
+      include: { category: true },
+    });
+    if (!data) throw new NotFoundException("Product not found");
+    return { success: true, data };
+  }
   create(dto: ProductDto) {
     return this.prisma.product
       .create({ data: { ...dto, slug: slugify(dto.name) }, include: { category: true } })

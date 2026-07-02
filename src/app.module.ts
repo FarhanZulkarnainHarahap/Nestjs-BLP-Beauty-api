@@ -10,6 +10,8 @@ import { ArticlesModule } from "./articles/articles.module";
 import { NewsletterModule } from "./newsletter/newsletter.module";
 import { UploadModule } from "./upload/upload.module";
 import { UsersModule } from "./users/users.module";
+import { AppController } from "./app.controller";
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -24,5 +26,6 @@ import { UsersModule } from "./users/users.module";
     UploadModule,
     UsersModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}

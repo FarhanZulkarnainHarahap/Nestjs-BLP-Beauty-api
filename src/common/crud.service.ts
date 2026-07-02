@@ -45,6 +45,11 @@ export class CrudService {
     if (!data) throw new NotFoundException("Record not found");
     return { success: true, data };
   }
+  async byId(resource: Resource, id: string) {
+    const data = await this.model(resource).findUnique({ where: { id } });
+    if (!data) throw new NotFoundException("Record not found");
+    return { success: true, data };
+  }
   create(resource: Resource, dto: object, slug = false) {
     const values = dto as Record<string, unknown>;
     const label = String(values.name ?? values.title ?? "");

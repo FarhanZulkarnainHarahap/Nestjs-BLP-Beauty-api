@@ -22,6 +22,12 @@ export class CategoriesController {
   @Get() @UseGuards(AdminViewGuard) list(@Query() query: Record<string, string>) {
     return this.service.list("category", query);
   }
+  @Get("id/:id")
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  byId(@Param("id") id: string) {
+    return this.service.byId("category", id);
+  }
   @Post() @UseGuards(JwtAuthGuard, RolesGuard) @Roles(Role.ADMIN, Role.SUPER_ADMIN) create(
     @Body() dto: CategoryDto,
   ) {
