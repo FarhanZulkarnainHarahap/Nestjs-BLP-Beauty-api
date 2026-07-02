@@ -23,6 +23,12 @@ export class ProductsController {
   @Get() @UseGuards(AdminViewGuard) list(@Query() query: Record<string, string>) {
     return this.service.list(query);
   }
+  @Get("id/:id")
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  byId(@Param("id") id: string) {
+    return this.service.byId(id);
+  }
   @Get(":slug") detail(@Param("slug") slug: string) {
     return this.service.bySlug(slug);
   }

@@ -9,7 +9,7 @@ async function bootstrap() {
   const port = config.get<number>("PORT", 5000);
 
   await app.listen(port);
-  console.log(`Nest Bun API listening on http://localhost:${port}`);
+  console.log(`Nest API listening on port ${port}`);
 }
 
 void bootstrap();

@@ -22,6 +22,12 @@ export class CampaignsController {
   @Get() @UseGuards(AdminViewGuard) list(@Query() q: Record<string, string>) {
     return this.service.list("campaign", q, { isPublished: true });
   }
+  @Get("id/:id")
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  byId(@Param("id") id: string) {
+    return this.service.byId("campaign", id);
+  }
   @Get(":slug") detail(@Param("slug") slug: string) {
     return this.service.detail("campaign", slug);
   }

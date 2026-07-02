@@ -22,6 +22,12 @@ export class BannersController {
   @Get() @UseGuards(AdminViewGuard) list(@Query() query: Record<string, string>) {
     return this.service.list("banner", query, { isActive: true });
   }
+  @Get("id/:id")
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  byId(@Param("id") id: string) {
+    return this.service.byId("banner", id);
+  }
   @Post() @UseGuards(JwtAuthGuard, RolesGuard) @Roles(Role.ADMIN, Role.SUPER_ADMIN) create(
     @Body() dto: BannerDto,
   ) {
